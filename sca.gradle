@@ -50,6 +50,38 @@ ant{
   classname : "javancss.javancssAntTask",
   classpath : configurations.javancss.asPath
   
-  javancss srcdir: "src"
+  javancss srcdir: "src",
+  packageMetrics:"yes",
+  functionMetrics:"yes",
+  abortOnFail : !ignoreFailures,
+  generateReport : true,
+  outputfile : "$reportDir/javancss.xml",
+  format: "xml"
+}
+
+ant.xslt(in:"$reportDir/javancss.xml",
+  style:"config/javancss/javancss2html.xsl",
+  out:"$reportDir/javancss.html",
+  classpath: configuration.javancss.asPath)
+  
+check.dependOn 'javancss'
+
+task classycleAnalyzer << {
+  def reportDir = file("$project.buildDir/reports/classycle")
+  def configDir = "config/classycle"
+  reportDir.mkdirs()
+  
+  ant{
+    taskdef name: 'classcyleAnalyzer',
+            classname: 'classycle.ant.ReportTask'
+            classpath: configurations.classycle.asPath
+            
+            classycleAnalyzer(reportFile: "$reportDir/classycle.xml")
+            {
+              fileset(dir: 'build/classes', include:'**/*.class')
+            }
+  }
+  
+  ant.xslt
   
 }
