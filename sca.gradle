@@ -1,0 +1,36 @@
+apply plugin : "checkstyle"
+apply plugin : "pmd"
+apply plugin : "cpd"
+apply plugin : "jdepend"
+apply plugin : "findbugs"
+
+
+cpdCheck{
+  ignoreFailures = true
+}
+
+pmd {
+  ignoreFailures = true
+}
+
+checkstyle{
+  ignoreFailures = true
+}
+
+findbugs{
+  ignoreFailures = true
+}
+
+jdepend{
+  ignoreFailures = true
+}
+
+configurations{
+  javancss
+  classycle
+}
+
+dependencies{
+  javancss "org.codehaus.javancss:javancss:33:54"
+  classycle fileTree( dir :'config/libs', include:'*.jar')
+}
