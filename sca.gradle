@@ -82,6 +82,22 @@ task classycleAnalyzer << {
             }
   }
   
-  ant.xslt
-  
+  ant.xslt(in : $reportDir/classycle.xml,
+      style: "$configDir/reportXMLtoHTML.xsl",
+      out: "$reportDir/classycle.html",
+      classpath: configurations.classycle.asPath)
+      
+      copy{
+        from "configDir"
+        into reportDir
+      }
+}
+check.dependOn 'classycleAnalyzer'
+
+if(tasks.findByPath('wrapper') == null)
+{
+  task wrapper(type:Wrapper)
+  {
+    gradleVersion = '2.4'
+  }
 }
