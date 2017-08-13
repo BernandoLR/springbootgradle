@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<exclude-pattern>*/start/*<exclude-pattern>
+
+  <rule ref="Generic.Classes.DuplicateClassName"></rule>
+  <rule ref="Generic.CodeAnalysis.EmptyStatement"></rule>
+  <rule ref="Generic.Classes.ForLoopShouldBeWhileLoop"></rule>
+
+
+<exclude-pattern>*/view/*<exclude-pattern>
