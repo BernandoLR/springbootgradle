@@ -2,7 +2,12 @@ buildscript {
 	ext {
 		springBootVersion = '1.4.3.RELEASE'
 		jacocoVersion = '0.7.5'
+		buildDir = 'build'
+		scanOutputDir = 'build/logs'
 	}
+	
+	
+	
 	repositories {
 		mavenCentral()
 	}
@@ -11,13 +16,21 @@ buildscript {
 	}
 }
 
+task makeDirectories << {
+	mkdir(buildDir)
+	mkdir(scanOutputDir)
+}
+
+task phpcs(type:Exec, description:"Find checksyle"){
+	executable scaCmdTemplete(name)
+		args "--report=checkstyle", "--report-file=build/logs/phpcs.xml", sourceDir, "--standard=spring-boot.xml", "--runtime-set", "ignore_warnings_on_exit", "1"
+}
+
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'pmd'
-apply plugin: 'findbugs'
-apply plugin: 'checkstyle'
-apply plugin: 'jacocoversion' 
+
 
 jar {
 	baseName = 'boot-gradle'
@@ -34,21 +47,8 @@ repositories {
 	mavenCentral()
 }
 
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web','org.apache.tomcat.embed:tomcat-embed-jasper'
 	,'javax.servlet:jstl')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-jacoco{
-	toolVersion = jacocoversion
-}
-jacocoTestReport
-{
-	reports{
-		html.enabled = true
-		xml.enabled = true
-		csv.enabled = true
-	}
-}
-test.finalizedBy jacocoTestReport
