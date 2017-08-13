@@ -34,3 +34,22 @@ dependencies{
   javancss "org.codehaus.javancss:javancss:33:54"
   classycle fileTree( dir :'config/libs', include:'*.jar')
 }
+
+task javancss() << {
+  description = "execute JavaNCSS tool on project source code"
+  group = "Code Quality"
+}
+
+def ignoreFailures = true
+
+def reportDir = file("$project.buildDir/reports/javancss")
+reportDir.mkdirs()
+
+ant{
+  taskdef name: "javancss",
+  classname : "javancss.javancssAntTask",
+  classpath : configurations.javancss.asPath
+  
+  javancss srcdir: "src"
+  
+}
